@@ -1,0 +1,36 @@
+service: forum-backend
+
+plugins:
+  - serverless-localstack
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: ap-east-1
+
+# events are what triggers the lambda
+# the http events come from nestjs docs, for local use for http events i would run dev server than rely on the deployed lambda
+# for the s3 event lambda.handler function gets called when a object is created in the bucket local-deployment-bucket env variables are supported so can ref prod resources
+# there can be other triggers e.g. message on a SQS queue etc check serverless docs
+functions:
+  main:
+    handler: dist/lambda.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: '{proxy+}'
+      - s3:
+          bucket: local-deployment-bucket
+          event: s3:ObjectCreated:*
+
+# boiler plate from github serverless-localstack
+# basically when stage is local or dev it uses the plugin and it deploys to localstack instead of regular aws
+custom:
+  localstack:
+    debug: true
+    stages:
+      - local
+      - dev

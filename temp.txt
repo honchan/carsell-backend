@@ -1,0 +1,11 @@
+awslocal s3api put-object --bucket "local-deployment-bucket" --key "file.json" --body "file.json" --region ap-east-1
+awslocal s3api list-objects --bucket local-deployment-bucket --region ap-east-1
+
+
+
+forum-backend model
+
+user
+email
+password
+
