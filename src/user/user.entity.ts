@@ -1,11 +1,9 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import { BeforeInsert, Column, Entity } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
+import { CommonEntity } from 'src/common/entities/common.entitiy';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id;
-
+export class User extends CommonEntity {
   @Column({ unique: true })
   email: string;
 

@@ -1,11 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 import { CreateUserInput } from '../user/inputs/create-user.input';
 import { User } from '../user/user.entity';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { TokenPayload } from './interface/token-payload.interface';
@@ -41,14 +39,14 @@ export class AuthService {
     }
   }
 
-  public getJwtToken(userId: number): string {
+  public getJwtToken(userId: string): string {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload);
 
     return token;
   }
 
-  public getCookieWithJwtToken(userId: number): string {
+  public getCookieWithJwtToken(userId: string): string {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload);
 
