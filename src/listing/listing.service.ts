@@ -1,0 +1,37 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/user/user.entity';
+import { UserService } from 'src/user/user.service';
+import { Repository } from 'typeorm';
+import { CreateListingInput } from './inputs/create-listing.input';
+import { Listing } from './listing.entity';
+
+@Injectable()
+export class ListingService {
+  constructor(
+    @InjectRepository(Listing)
+    private readonly listingRepository: Repository<Listing>,
+    private readonly userService: UserService,
+  ) {}
+
+  public listings(): Promise<Listing[]> {
+    return this.listingRepository.find();
+  }
+
+  public async listingsBySeller(sellerId: string): Promise<Listing[]> {
+    const seller = await this.userService.getById(sellerId);
+    return this.listingRepository.find({ where: { seller } });
+  }
+
+  public async createListing(
+    input: CreateListingInput,
+    seller: User,
+  ): Promise<Listing> {
+    const listing = await this.listingRepository.create({
+      ...input,
+      seller,
+    });
+
+    return await this.listingRepository.save(listing);
+  }
+}
