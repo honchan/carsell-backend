@@ -4,6 +4,7 @@ import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { CreateListingInput } from './inputs/create-listing.input';
+import { UpdateListingInput } from './inputs/update-listing.input';
 import { Listing } from './listing.entity';
 
 @Injectable()
@@ -33,5 +34,18 @@ export class ListingService {
     });
 
     return await this.listingRepository.save(listing);
+  }
+
+  public async updateListing(
+    listingId: string,
+    input: UpdateListingInput,
+    sellerId: string,
+  ): Promise<Listing> {
+    const listing = await this.listingRepository.findOne({
+      where: { id: listingId, seller: { id: sellerId } },
+    });
+    const updatedListing = await this.listingRepository.merge(listing, input);
+
+    return await this.listingRepository.save(updatedListing);
   }
 }

@@ -27,7 +27,6 @@ export class AuthController {
   @Post('log-in')
   async login(@Req() request: RequestWithUser): Promise<string> {
     const user = request?.user;
-    console.log('/log-in');
     return this.authService.getJwtToken(user?.id);
   }
 

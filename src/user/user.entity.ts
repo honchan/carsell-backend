@@ -1,5 +1,7 @@
 import { BeforeInsert, Column, Entity, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { Exclude } from 'class-transformer';
+
 import { CommonEntity } from 'src/common/entities/common.entitiy';
 import { Listing } from 'src/listing/listing.entity';
 
@@ -8,15 +10,18 @@ export class User extends CommonEntity {
   @Column({ unique: true })
   email: string;
 
+  @Exclude()
   @Column()
   password: string;
 
   @Column()
   name: string;
 
+  @Exclude()
   @OneToMany(() => Listing, (listing) => listing.seller)
   itemsSold: Listing[];
 
+  @Exclude()
   @OneToMany(() => Listing, (listing) => listing.buyer)
   itemsBought: Listing[];
 

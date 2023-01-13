@@ -5,6 +5,7 @@ import { MeetupLocation } from 'src/common/enums/meetup-location.enum';
 import { Review } from 'src/review/review.entity';
 import { User } from 'src/user/user.entity';
 import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
+import { ListingStatus } from './enums/listing-status.enum';
 
 @Entity()
 export class Listing extends CommonEntity {
@@ -17,6 +18,13 @@ export class Listing extends CommonEntity {
     default: Condition.NEW,
   })
   condition: Condition;
+
+  @Column({
+    type: 'enum',
+    enum: ListingStatus,
+    default: ListingStatus.AVAILABLE,
+  })
+  status: ListingStatus;
 
   @Column({
     type: 'enum',
