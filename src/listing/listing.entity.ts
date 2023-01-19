@@ -2,9 +2,10 @@ import { CommonEntity } from 'src/common/entities/common.entitiy';
 import { Category } from 'src/common/enums/category.enum';
 import { Condition } from 'src/common/enums/condition.enum';
 import { MeetupLocation } from 'src/common/enums/meetup-location.enum';
+import { Offer } from 'src/offer/offer.entity';
 import { Review } from 'src/review/review.entity';
 import { User } from 'src/user/user.entity';
-import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { ListingStatus } from './enums/listing-status.enum';
 
 @Entity()
@@ -39,6 +40,9 @@ export class Listing extends CommonEntity {
 
   @ManyToOne(() => User, (user) => user.itemsBought, { eager: true })
   buyer: User;
+
+  @OneToMany(() => Offer, (offer) => offer.listing)
+  offers: Offer[];
 
   @Column({
     type: 'enum',

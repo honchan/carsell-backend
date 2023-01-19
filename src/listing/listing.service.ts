@@ -19,6 +19,10 @@ export class ListingService {
     return this.listingRepository.find();
   }
 
+  public findById(id: string): Promise<Listing> {
+    return this.listingRepository.findOne({ where: { id } });
+  }
+
   public async listingsBySeller(sellerId: string): Promise<Listing[]> {
     const seller = await this.userService.getById(sellerId);
     return this.listingRepository.find({ where: { seller } });

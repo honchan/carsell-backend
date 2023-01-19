@@ -4,6 +4,7 @@ import { Exclude } from 'class-transformer';
 
 import { CommonEntity } from 'src/common/entities/common.entitiy';
 import { Listing } from 'src/listing/listing.entity';
+import { Offer } from 'src/offer/offer.entity';
 
 @Entity()
 export class User extends CommonEntity {
@@ -24,6 +25,9 @@ export class User extends CommonEntity {
   @Exclude()
   @OneToMany(() => Listing, (listing) => listing.buyer)
   itemsBought: Listing[];
+
+  @OneToMany(() => Offer, (offer) => offer.buyer)
+  offers: Offer[];
 
   get rating(): number {
     return this.itemsSold.reduce((acc, curr) => {
