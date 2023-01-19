@@ -5,6 +5,7 @@ import { DatabaseModule } from '../db/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from 'src/auth/auth.module';
 import { ListingModule } from 'src/listing/listing.module';
+import { OfferModule } from 'src/offer/offer.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -17,6 +18,7 @@ const ENV = process.env.NODE_ENV;
     DatabaseModule,
     AuthModule,
     ListingModule,
+    OfferModule,
   ],
   controllers: [AppController],
   providers: [AppService],

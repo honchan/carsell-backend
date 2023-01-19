@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ListingService } from 'src/listing/listing.service';
 import { User } from 'src/user/user.entity';
@@ -21,8 +21,19 @@ export class OfferService {
   }
 
   public async createOffer(input: CreateOfferInput): Promise<Offer> {
+    const listing = await this.listingService.findById(input.listingId);
+    const sameSellerAndBuyer = listing.seller.id === input.buyer.id;
+
+    if (sameSellerAndBuyer) {
+      throw new BadRequestException(
+        'You cannot make an offer on your own listing',
+      );
+    }
+
     const offer = await this.offerRepository.create({
-      ...input,
+      buyer: input.buyer,
+      price: input.price,
+      listing,
     });
 
     return await this.offerRepository.save(offer);
@@ -32,6 +43,10 @@ export class OfferService {
     const offer = await this.offerRepository.findOne({
       where: { id: offerId },
     });
+
+    if (!offer) {
+      throw new BadRequestException('Invalid offer');
+    }
 
     const validSeller = offer.listing.seller.id === seller.id;
     const offerAccepted = offer.status === OfferStatus.ACCEPTED;

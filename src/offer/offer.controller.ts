@@ -36,7 +36,7 @@ export class OfferController {
   @UseGuards(JwtAuthGuard)
   public async cancelOffer(
     @Req() request: RequestWithUser,
-    @Body('id') id: string,
+    @Body('listingId') id: string,
   ): Promise<boolean> {
     return this.offerService.cancelOffer(request.user, id);
   }
@@ -45,8 +45,8 @@ export class OfferController {
   @UseGuards(JwtAuthGuard)
   public async acceptOffer(
     @Req() request: RequestWithUser,
-    @Body('id') id: string,
-  ) {
-    this.offerService.acceptOffer(request.user, id);
+    @Body('offerid') id: string,
+  ): Promise<boolean> {
+    return this.offerService.acceptOffer(request.user, id);
   }
 }
