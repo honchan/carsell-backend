@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DatabaseFileService } from 'src/database-file/databaseFile.service';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './inputs/create-user.input';
 import { User } from './user.entity';
@@ -9,6 +10,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly databaseFileService: DatabaseFileService,
   ) {}
 
   async create(input: CreateUserInput): Promise<User> {
@@ -41,5 +43,14 @@ export class UserService {
       'User with this id does not exist',
       HttpStatus.NOT_FOUND,
     );
+  }
+
+  async addAvatar(userId: string, imageBuffer: Buffer, filename: string) {
+    const avatar = await this.databaseFileService.uploadDatabaseFile(
+      imageBuffer,
+      filename,
+    );
+    await this.userRepository.update(userId, { avatarId: avatar.id });
+    return avatar;
   }
 }

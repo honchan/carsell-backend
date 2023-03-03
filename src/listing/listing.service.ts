@@ -25,7 +25,8 @@ export class ListingService {
 
   public async listingsBySeller(sellerId: string): Promise<Listing[]> {
     const seller = await this.userService.getById(sellerId);
-    return this.listingRepository.find({ where: { seller } });
+    const result = await this.listingRepository.find({ where: { seller } });
+    return result;
   }
 
   public async createListing(
