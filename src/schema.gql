@@ -1,0 +1,63 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Offer {
+  price: Float!
+  buyer: User!
+  status: OfferStatus!
+}
+
+enum OfferStatus {
+  ACCEPTED
+  PENDING
+  CANCELLED
+}
+
+type Review {
+  rating: Float!
+  description: String!
+  listing: Listing!
+}
+
+type Listing {
+  price: Float!
+  condition: Condition!
+  status: ListingStatus!
+  location: MeetupLocation!
+  seller: User!
+  buyer: User
+  offers: [Offer!]
+  category: MeetupLocation!
+  description: String!
+  review: Review
+}
+
+enum Condition {
+  NEW
+  LIKE_NEW
+  USED
+  WELL_USED
+}
+
+enum ListingStatus {
+  AVAILABLE
+  SOLD
+  CANCELLED
+}
+
+enum MeetupLocation {
+  ISLAND
+  KOWLOON
+  NEW_TERRITORIES
+}
+
+type User {
+  email: String!
+  name: String!
+}
+
+type Query {
+  listings: [Listing!]!
+  listing(id: String!): Listing!
+}

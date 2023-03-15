@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DatabaseFileService } from 'src/database-file/databaseFile.service';
+import { DatabaseFileService } from 'src/database-file/database-file.service';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './inputs/create-user.input';
 import { User } from './user.entity';

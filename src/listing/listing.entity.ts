@@ -1,3 +1,4 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import { CommonEntity } from 'src/common/entities/common.entitiy';
 import { Category } from 'src/common/enums/category.enum';
 import { Condition } from 'src/common/enums/condition.enum';
@@ -9,10 +10,13 @@ import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { ListingStatus } from './enums/listing-status.enum';
 
 @Entity()
+@ObjectType()
 export class Listing extends CommonEntity {
+  @Field()
   @Column()
   price?: number;
 
+  @Field(() => Condition)
   @Column({
     type: 'enum',
     enum: Condition,
@@ -20,6 +24,7 @@ export class Listing extends CommonEntity {
   })
   condition: Condition;
 
+  @Field(() => ListingStatus)
   @Column({
     type: 'enum',
     enum: ListingStatus,
@@ -27,6 +32,7 @@ export class Listing extends CommonEntity {
   })
   status: ListingStatus;
 
+  @Field(() => MeetupLocation)
   @Column({
     type: 'enum',
     enum: MeetupLocation,
@@ -35,15 +41,19 @@ export class Listing extends CommonEntity {
   })
   location: MeetupLocation;
 
+  @Field(() => User)
   @ManyToOne(() => User, (user) => user.itemsSold, { eager: true })
   seller: User;
 
+  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.itemsBought, { eager: true })
   buyer: User;
 
+  @Field(() => [Offer], { nullable: true })
   @OneToMany(() => Offer, (offer) => offer.listing)
   offers: Offer[];
 
+  @Field(() => MeetupLocation)
   @Column({
     type: 'enum',
     enum: Category,
@@ -51,9 +61,11 @@ export class Listing extends CommonEntity {
   })
   category: Category;
 
+  @Field()
   @Column()
   description: string;
 
+  @Field(() => Review, { nullable: true })
   @OneToOne(() => Review, (review) => review.listing)
   review: Review;
 }

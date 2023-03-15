@@ -12,10 +12,13 @@ import { Exclude } from 'class-transformer';
 import { CommonEntity } from 'src/common/entities/common.entitiy';
 import { Listing } from 'src/listing/listing.entity';
 import { Offer } from 'src/offer/offer.entity';
-import { DatabaseFile } from 'src/database-file/databaseFile.entity';
+import { DatabaseFile } from 'src/database-file/database-file.entity';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @Entity()
+@ObjectType()
 export class User extends CommonEntity {
+  @Field()
   @Column({ unique: true })
   email: string;
 
@@ -23,6 +26,7 @@ export class User extends CommonEntity {
   @Column()
   password: string;
 
+  @Field()
   @Column()
   name: string;
 
@@ -41,7 +45,7 @@ export class User extends CommonEntity {
   @OneToOne(() => DatabaseFile, { nullable: true })
   avatar?: DatabaseFile;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: null })
   avatarId?: string;
 
   get rating(): number {
